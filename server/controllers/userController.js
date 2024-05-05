@@ -14,8 +14,8 @@ try{
 
     const hashedPassword= await bcrypt.hash(password,10);
     const user = await Users.create({
+    userName: req.body.userName,
       email,
-      userName,
       password:hashedPassword,
     });
     delete user.password;
@@ -32,11 +32,11 @@ try{
        const {userName, password}=req.body;
         const user = await Users.findOne({userName});
         if(!user)
-          return res.json({msg:"Incorrect userName or password",status: false});
+          return res.json({msg:"Incorrect username or password",status: false});
       
         const isPasswordValid = await bcrypt.compare(password,user.password);
         if(!isPasswordValid) 
-          return res.json({msg:"Incorrect userName or password",status: false});
+          return res.json({msg:"Incorrect username or password",status: false});
         
        
         delete user.password;
@@ -65,6 +65,22 @@ try{
             isSet: userData.isAvatarImageSet,
             image: userData.avatarImage,
           });
+        } catch (ex) {
+          next(ex);
+        }
+      };
+
+      export const getAllUsers = async (req, res, next) => {
+        try {
+         const users = await Users.find({_id:{$ne: req.params.id}}).select([
+          "email",
+          "userName",
+          "avatarImage",
+          "_id",
+         ]);
+
+         return res.json(users);
+
         } catch (ex) {
           next(ex);
         }

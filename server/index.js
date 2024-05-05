@@ -11,7 +11,9 @@ app.use(express.json());
 
 app.use("/api/auth",userRoutes);
 
-mongoose.connect("mongodb+srv://adii-khandelwal:qwerty01@cluster0.yqsmzuf.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
+mongoose.connect("mongodb+srv://adii-khandelwal:qwerty01@cluster0.yqsmzuf.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",{
+    dbName:"Buzz-chat",
+})
 .then(()=> {
     console.log("DB Connection Successful");})
 .catch((err)=>{
