@@ -10,6 +10,7 @@ import {Buffer} from "buffer";
 
 
 
+
 export default function SetAvatar() {
   const api = "https://api.multiavatar.com/4645646";
   const navigate = useNavigate();
@@ -25,12 +26,43 @@ export default function SetAvatar() {
   };
 
   const setProfilePicture = async () => {
+    if (selectedAvatar === undefined) {
+      toast.error("Please select an avatar", toastOptions);
+    } else {
+      const user = await JSON.parse(
+        localStorage.getItem("chat-app-user")
+      );
 
+      const { data } = await axios.post(`${setAvatarRoute}/${user._id}`, {
+        image: avatars[selectedAvatar],
+      });
+      if (data.isSet) {
+        user.isAvatarImageSet = true;
+        user.avatarImage = data.image;
+        localStorage.setItem(
+         "chat-app-user",
+          JSON.stringify(user)
+        );
+        navigate("/");
+      } else {
+        toast.error("Error setting avatar. Please try again.", toastOptions);
+      }
+    }
   };
+
+  useEffect( ()=> {
+    async function ifNoLocalStorage(){
+        if(!localStorage.getItem("chat-app-user"))
+        {
+            navigate("/login");
+        }
+    }
+    ifNoLocalStorage();
+  },[]);
+
   useEffect(  () =>{
     async function settingAvatar(){
         const data = [];
-        console.log("inside avatar---");
         for (let i = 0; i < 4; i++) {
           const image = await axios.get(
             `${api}/${Math.round(Math.random() * 1000)}`
@@ -49,11 +81,12 @@ settingAvatar();
   
 return (
     <>
-      {/* {isLoading ? (
+      {isLoading ? (
         <Container>
           <img src={loader} alt="loader" className="loader" />
+      
         </Container>
-      ) : ( */}
+      ) : (
         <Container>
           <div className="title-container">
             <h1>Pick an Avatar as your profile picture</h1>
@@ -76,12 +109,12 @@ return (
               );
             })}
           </div>
-          {/* <button onClick={setProfilePicture} className="submit-btn">
+          <button onClick={setProfilePicture} className="submit-btn">
             Set as Profile Picture
-          </button> */}
+          </button>
           <ToastContainer />
         </Container>
-      {/* )} */}
+      )}
     </>
   );
 }
@@ -136,8 +169,9 @@ const Container = styled.div`
     border-radius: 0.4rem;
     font-size: 1rem;
     text-transform: uppercase;
+    transition: 0.5s ease-in-out;
     &:hover {
-      background-color: #4e0eff;
+      background-color: #997af0;
     }
   }
 `;
