@@ -64,3 +64,16 @@ PART 1
 ☑️ Search Group Messages
 
 ☑️ Search Private Messages
+
+Tasks:
+#0 create a baseline chat app <DONE>
+#1 add lazy suspense for performance optimization <DONE>
+#2 Adding Firebase Login With Google, Facebook and GitHub | JavaScript Debouncing <ONGOING>
+#3 Add Redux Toolkit for State Management
+#4 Add Typescript Support For Frontend and Backend
+#5 Add Responsiveness Using CSS Media Queries
+#8 Adding Group Chats
+#6 Add JWT Support For Authentication and Authorisation
+#7 Add Block User Functionality
+#9 Sending Image in Group Chats and One-to-One Chats
+#10 Showing New Messages on Top
