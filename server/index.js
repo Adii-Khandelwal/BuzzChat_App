@@ -15,7 +15,7 @@ app.use("/api/auth",userRoutes);
 app.use("/api/messages",messageRoutes);
 
 
-mongoose.connect("mongodb+srv://adii-khandelwal:qwerty01@cluster0.yqsmzuf.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",{
+mongoose.connect(process.env.MONGO_URI,{
     dbName:"Buzz-chat",
 })
 .then(()=> {
